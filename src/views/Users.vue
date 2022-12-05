@@ -3,18 +3,10 @@
 import axios from "../plugins/axios"
 import type {AxiosInstance} from "axios";
 
-declare module '@vue/runtime-core' {
-
-  interface ComponentCustomProperties {
-    $axios: AxiosInstance;
-  }
-}
 
 
 
-async fetchUsers(){
-  const Users= await $axios.get('/users')
-}
+
 </script>
 <template>
   <div class="about">
