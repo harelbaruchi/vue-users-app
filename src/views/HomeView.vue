@@ -1,58 +1,77 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import type { User } from '@/interfaces/users';
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import type { AxiosInstance } from "axios";
+import type { User } from "@/interfaces/users";
 
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties {
+    $axios: AxiosInstance;
+    $baseUrl: "https://randomuser.me/api/?results=10";
+  }
+}
 
+export default defineComponent({
+  name: "home",
+  data() {
+    return {
+      usersList: [] as User[],
+    };
+  },
+  methods: {
+    async getUsers() {
+      await this.$axios.get(this.$baseUrl).then((response: any) => {
+        this.usersList = response.data.results;
+      });
+      console.log(this.usersList[0].picture.medium);
+    },
+  },
+
+  async mounted() {
+    await this.getUsers();
+  },
+});
 
 /**
  * Users
- * 
- * 
- * first name - string 
- * last name - string 
+ *
+ *
+ * first name - string
+ * last name - string
  * email- string
- * avatar image- string 
+ * avatar image- string
  */
-
-const users= ref<User[]>([])
-const newUser= ref<User>({})
-function addUser(){
-  users.value.push({firstName:newUser.value.firstName,
-lastName:'',
-email: '',
-avatar:''})
-}
 </script>
 
 <template>
   <main>
-    <pre>
-      {{newUser}}
-    </pre>
-    <form @submit.prevent="addUser">
-      <div>
-        <label for="user-firstName">User First Name</label>
-      <input id="user-firstName" v-model="newUser.firstName" type="text">
-      
+    <section class="container mx-auto">
+      <div
+        class="bg-white rounded border border-gray-200 relative flex flex-col"
+      >
+        <div class="fa fa-headphones-alt float-right text-green-400 text-xl">
+          <ol id="users">
+            <li
+              class="flex justify-between border-b items-center p-3 pl-6 cursor-pointer transition duration-300 hover:bg-gray-50"
+              v-for="user in usersList"
+            >
+              <div>
+                <span class="font-bold block text-gray-600">
+                  Name: {{ user.name?.first }} {{ user.name?.last }}
+                </span>
+                <span class="text-gray-500 text-sm">
+                  Email: {{ user.email }}
+                </span>
+                <span class="text-gray-500 text-sm float-left">
+                  <img
+                    class="w-24 h-24 rounded-full mx-auto"
+                    :src="user.picture.medium"
+                  />
+                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
       </div>
-      <div>
-        <label for="user-lastName">User Last Name</label>
-      <input id="user-lastName" v-model="newUser.lastName" type="text">
-      
-      </div>
-      <div>
-        <label for="user-email">User Email</label>
-      <input id="user-email" v-model="newUser.email" type="text">
-      
-      </div>
-      <button type="submit">Add User</button>
-    </form>
-
-    <ul>
-      <li v-for="user in users"
-      :key="user.firstName">
-      {{user.firstName}}
-      </li>
-    </ul>
+    </section>
   </main>
 </template>

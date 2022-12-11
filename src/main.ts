@@ -13,7 +13,7 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(axios, {
-  baseUrl: "https://6368c0c615219b849605d2d9.mockapi.io/api/v1/users",
+  baseUrl: "https://randomuser.me/api/?results=10",
 });
 
 app.mount("#app");

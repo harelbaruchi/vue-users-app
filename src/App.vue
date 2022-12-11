@@ -1,23 +1,17 @@
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent } from "vue";
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
+import AppHeaderVue from "./components/AppHeader.vue";
+
+export default defineComponent({
+  components: {
+    AppHeaderVue,
+  },
+});
 </script>
 
 <template>
-  <header>
-    <h1>Users App</h1>
- 
-
-    <div class="wrapper">
-      
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/users">Users</RouterLink>
-      </nav>
-    </div>
-  </header>
-
+  <AppHeaderVue></AppHeaderVue>
   <RouterView />
 </template>
 
